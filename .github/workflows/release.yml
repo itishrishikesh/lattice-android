@@ -11,12 +11,12 @@ permissions:
   contents: write
 
 concurrency:
-  group: lattice-v1-release
+  group: lattice-v1.0.1-release
   cancel-in-progress: false
 
 jobs:
   release:
-    name: Build and publish v1.0.0
+    name: Build and publish v1.0.1
     runs-on: ubuntu-latest
     steps:
       - name: Check out source
@@ -35,16 +35,16 @@ jobs:
           ./gradlew testDebugUnitTest assembleDebug
 
       - name: Prepare release asset
-        run: cp app/build/outputs/apk/debug/app-debug.apk lattice-v1.0.0.apk
+        run: cp app/build/outputs/apk/debug/app-debug.apk lattice-v1.0.1.apk
 
       - name: Publish GitHub release
         env:
           GH_TOKEN: ${{ github.token }}
         run: |
-          if gh release view v1.0.0 >/dev/null 2>&1; then
-            gh release upload v1.0.0 lattice-v1.0.0.apk --clobber
+          if gh release view v1.0.1 >/dev/null 2>&1; then
+            gh release upload v1.0.1 lattice-v1.0.1.apk --clobber
           else
-            gh release create v1.0.0 lattice-v1.0.0.apk \
-              --title "Lattice v1.0.0" \
-              --notes "First public release of Lattice, a focused Android reader for Markdown and Obsidian vaults stored on GitHub."
+            gh release create v1.0.1 lattice-v1.0.1.apk \
+              --title "Lattice v1.0.1" \
+              --notes "Reader update: selectable note text, one-tap copy for the full note, clearer internal and external links, improved Obsidian wiki-link resolution, callouts, tables, highlights, tags, and embeds."
           fi

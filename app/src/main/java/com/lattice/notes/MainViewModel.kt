@@ -13,6 +13,7 @@ import com.lattice.notes.data.RepoFile
 import com.lattice.notes.data.Repository
 import com.lattice.notes.data.SecureTokenStore
 import com.lattice.notes.data.TokenPollResult
+import com.lattice.notes.ui.markdown.resolveWikiTarget
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.flow.MutableStateFlow
@@ -189,16 +190,10 @@ class MainViewModel(application: Application) : AndroidViewModel(application) {
     }
 
     fun followWikiLink(target: String) {
-        val normalized = target.substringBefore('#').trim().removeSuffix(".md")
-        val currentParent = _state.value.currentFile?.parent.orEmpty()
         val candidates = _state.value.files.filter(RepoFile::isMarkdown)
-        val match = candidates.firstOrNull {
-            it.path.removeSuffix(".md").equals(normalized, ignoreCase = true)
-        } ?: candidates.firstOrNull {
-            it.name.removeSuffix(".md").equals(normalized, ignoreCase = true) && it.parent == currentParent
-        } ?: candidates.firstOrNull {
-            it.name.removeSuffix(".md").equals(normalized.substringAfterLast('/'), ignoreCase = true)
-        }
+        val currentPath = _state.value.currentFile?.path.orEmpty()
+        val matchPath = resolveWikiTarget(currentPath, target, candidates.map(RepoFile::path))
+        val match = candidates.firstOrNull { it.path == matchPath }
         if (match != null) openFile(match) else showMessage("“$target” isn’t in this repository.")
     }
 
