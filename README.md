@@ -2,6 +2,8 @@
 
 Lattice is a focused Android reader for Markdown and Obsidian vaults stored on GitHub. Sign in, select a repository, browse its folders, and read notes in a calm native interface.
 
+[Download the latest Android APK](https://github.com/itishrishikesh/lattice-android/releases/latest)
+
 ## Highlights
 
 - GitHub OAuth device flow, with fine-grained personal access tokens as a no-backend fallback
