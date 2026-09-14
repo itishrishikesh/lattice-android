@@ -47,3 +47,4 @@ jobs:
             gh release create v1.0.0 lattice-v1.0.0.apk \
               --title "Lattice v1.0.0" \
               --notes "First public release of Lattice, a focused Android reader for Markdown and Obsidian vaults stored on GitHub."
+          fi
